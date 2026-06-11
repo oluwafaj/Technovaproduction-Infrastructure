@@ -1,0 +1,22 @@
+# Local Terraform state (contains sensitive resource details in plain text)
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Crash logs
+crash.log
+crash.*.log
+
+# Override files
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# CLI config
+.terraformrc
+terraform.rc
+
+# Var files (may contain sensitive values locally)
+*.tfvars
+*.tfvars.json
