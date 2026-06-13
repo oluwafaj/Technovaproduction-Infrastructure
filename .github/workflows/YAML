@@ -1,0 +1,108 @@
+name: Terraform CI/CD
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'environments/**'
+      - 'modules/**'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'environments/**'
+      - 'modules/**'
+  workflow_dispatch:
+    inputs:
+      environment:
+        description: 'Environment to deploy'
+        required: true
+        default: 'dev'
+        type: choice
+        options:
+          - dev
+          - prod
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  terraform-dev:
+    name: 'Terraform Dev'
+    runs-on: ubuntu-latest
+    if: github.ref == 'refs/heads/main' || github.event.inputs.environment == 'dev'
+    defaults:
+      run:
+        working-directory: environments/dev
+    env:
+      ARM_CLIENT_ID: ${{ secrets.DEV_ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.DEV_ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.DEV_ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.DEV_ARM_TENANT_ID }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.0
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve tfplan
+
+  terraform-prod:
+    name: 'Terraform Prod'
+    runs-on: ubuntu-latest
+    needs: terraform-dev
+    if: github.ref == 'refs/heads/main' || github.event.inputs.environment == 'prod'
+    environment: production
+    defaults:
+      run:
+        working-directory: environments/prod
+    env:
+      ARM_CLIENT_ID: ${{ secrets.PROD_ARM_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.PROD_ARM_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.PROD_ARM_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.PROD_ARM_TENANT_ID }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.0
+
+      - name: Terraform Init
+        run: terraform init
+
+      - name: Terraform Format Check
+        run: terraform fmt -check -recursive
+
+      - name: Terraform Validate
+        run: terraform validate
+
+      - name: Terraform Plan
+        run: terraform plan -out=tfplan
+
+      - name: Terraform Apply
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: terraform apply -auto-approve tfplan
