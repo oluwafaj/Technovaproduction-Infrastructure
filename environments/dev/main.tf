@@ -41,7 +41,7 @@ module "compute" {
   resource_group_name = var.resource_group_name
   location            = var.location
   vm_name             = "technovadev-vm"
-  admin_username      = var.admin_username
+  admin_username      = "adminuserdev"
   admin_password      = module.keyvault.admin_password
   subnet_id           = module.networking.subnet_ids["web"]
   tags                = local.common_tags

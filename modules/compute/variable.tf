@@ -16,7 +16,8 @@ variable "vm_size" {
 }
 
 variable "admin_username" {
-  type = string
+  type    = string
+  default = "adminuser"
 }
 
 variable "admin_password" {
