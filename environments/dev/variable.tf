@@ -13,5 +13,5 @@ variable "app_service_plan" {}
 variable "tags" {}
 variable "file_share" {}
 variable "file_share_quota" {
-  
+
 }

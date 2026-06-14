@@ -3,14 +3,14 @@ resource "azurerm_public_ip" "pip" {
   location            = var.location
   resource_group_name = var.resource_group_name
   allocation_method   = "Dynamic"
-    tags                =var.tags
+  tags                = var.tags
 }
 
 resource "azurerm_network_interface" "nic" {
   name                = "${var.vm_name}-nic"
   location            = var.location
   resource_group_name = var.resource_group_name
-  tags                =var.tags 
+  tags                = var.tags
   ip_configuration {
     name                          = "internal"
     subnet_id                     = var.subnet_id
@@ -26,7 +26,7 @@ resource "azurerm_windows_virtual_machine" "vm" {
   size                = var.vm_size
   admin_username      = var.admin_username
   admin_password      = var.admin_password
-  tags                =var.tags 
+  tags                = var.tags
 
   network_interface_ids = [
     azurerm_network_interface.nic.id

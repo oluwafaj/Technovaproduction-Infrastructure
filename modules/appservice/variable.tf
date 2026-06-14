@@ -25,7 +25,7 @@ variable "runtime_stack" {
 }
 
 variable "tags" {
-    type = map(string)
-    description = "A map of tags to assign to the resources"
-    default = {}
-    }
+  type        = map(string)
+  description = "A map of tags to assign to the resources"
+  default     = {}
+}
