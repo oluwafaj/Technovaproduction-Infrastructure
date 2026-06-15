@@ -68,13 +68,12 @@ jobs:
         if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve tfplan
 
-  terraform-prod:
-    name: 'Terraform Prod'
+  terraform-prod-plan:
+    name: 'Terraform Prod Plan'
     runs-on: ubuntu-latest
     timeout-minutes: 10
     needs: terraform-dev
     if: github.ref == 'refs/heads/main' || github.event.inputs.environment == 'prod'
-    environment: production
     defaults:
       run:
         working-directory: environments/prod
@@ -105,6 +104,46 @@ jobs:
       - name: Terraform Plan
         run: terraform plan -out=tfplan
 
+      - name: Upload Plan Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: prod-tfplan
+          path: environments/prod/tfplan
+          retention-days: 1
+
+  terraform-prod-apply:
+    name: 'Terraform Prod Apply'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    needs: terraform-prod-plan
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    environment: production
+    defaults:
+      run:
+        working-directory: environments/prod
+    env:
+      ARM_CLIENT_ID: ${{ secrets.PROD_AZURE_CLIENT_ID }}
+      ARM_CLIENT_SECRET: ${{ secrets.PROD_AZURE_CLIENT_SECRET }}
+      ARM_SUBSCRIPTION_ID: ${{ secrets.PROD_AZURE_SUBSCRIPTION_ID }}
+      ARM_TENANT_ID: ${{ secrets.PROD_AZURE_TENANT_ID }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.7.0
+
+      - name: Download Plan Artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: prod-tfplan
+          path: environments/prod
+
+      - name: Terraform Init
+        run: terraform init
+
       - name: Terraform Apply
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: terraform apply -auto-approve tfplan
