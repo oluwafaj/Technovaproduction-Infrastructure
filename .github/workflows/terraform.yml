@@ -32,7 +32,7 @@ jobs:
   terraform-dev:
     name: 'Terraform Dev'
     runs-on: ubuntu-latest
-    imeout-minutes: 10
+    timeout-minutes: 10
     if: github.ref == 'refs/heads/main' || github.event.inputs.environment == 'dev'
     defaults:
       run:
