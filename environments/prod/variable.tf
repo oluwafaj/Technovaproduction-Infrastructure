@@ -4,7 +4,10 @@ variable "resource_group_name" {}
 variable "tenant_id" {}
 variable "object_id" {}
 variable "sku_name" {}
-variable "admin_username" {}
+variable "admin_username" {
+  type    = string
+  default = "adminuserprod"
+}
 variable "storage_account_name" {}
 variable "storage_account_tier" {}
 variable "storage_account_replication_type" {}
