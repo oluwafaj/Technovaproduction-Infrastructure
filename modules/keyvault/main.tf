@@ -4,7 +4,7 @@ resource "azurerm_key_vault" "technova-kv" {
   location                   = var.location
   tenant_id                  = var.tenant_id
   sku_name                   = var.sku_name
-  soft_delete_retention_days = 7
+  soft_delete_retention_days = 90
   tags                       = var.tags
 
   access_policy {
