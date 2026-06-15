@@ -9,7 +9,7 @@ resource "azurerm_storage_account" "storage" {
 
 resource "azurerm_storage_share" "share" {
   name                 = var.file_share_name
-  storage_account_name = "azurerm_storage_account.storage.name"
+  storage_account_name = azurerm_storage_account.storage.name
   quota                = var.file_share_quota
   enabled_protocol     = "SMB"
 }

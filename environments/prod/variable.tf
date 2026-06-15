@@ -25,7 +25,7 @@ variable "tenant_id" {
 
 variable "object_id" {
   type    = string
-  default = "cff408fb-dd1d-4f43-aa6f-eea11e32c00c"  
+  default = "cff408fb-dd1d-4f43-aa6f-eea11e32c00c"
 }
 
 variable "sku_name" {
