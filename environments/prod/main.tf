@@ -49,8 +49,8 @@ module "appservice" {
   source                = "../../modules/appservice"
   resource_group_name   = var.resource_group_name
   location              = var.location
-  app_service_plan_name = var.app_service_plan_name
-  app_service_name      = var.linux_web_app_app_service_name
+  app_service_plan_name = "technovaprod-plan"
+  app_service_name      = "technovaprod-app"
   sku_name              = "S1"
   runtime_stack         = "NODE|18-lts"
   tags                  = local.common_tags
