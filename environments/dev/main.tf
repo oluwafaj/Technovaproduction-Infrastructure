@@ -69,3 +69,17 @@ module "storage" {
   file_share_quota                 = "5"
   tags                             = local.common_tags
 }
+
+module "monitoring" {
+  source                           = "../../modules/monitoring"
+  resource_group_name              = "monitoring-dev"
+  location                         = var.location
+  log_analytics_workspace_name     = "technovadev-law"
+  action_group_name                = "technovadev-alerts"
+  alert_email_address              = "femiajao@ymail.com"
+  vm_id                            = module.compute.vm_id
+  storage_account_id               = module.storage.storage_account_id
+  cpu_threshold                    = 80
+  storage_capacity_threshold_bytes = 4294967296
+  tags                             = local.common_tags
+}
