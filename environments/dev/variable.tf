@@ -20,7 +20,7 @@ variable "tenant_id" {
 
 variable "object_id" {
   type    = string
-  default = "" # set to your actual object_id value
+  default = "66070761-3996-4b08-93bc-57ce33fdc6db" # set to your actual object_id value
 }
 
 variable "sku_name" {
