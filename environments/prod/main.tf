@@ -52,7 +52,7 @@ module "appservice" {
   app_service_plan_name = "technovaprod-plan"
   app_service_name      = "technovaprod-app"
   sku_name              = "S1"
-  runtime_stack         = "NODE|18-lts"
+  php_version           = "8.2"
   tags                  = local.common_tags
 }
 

@@ -13,5 +13,10 @@ resource "azurerm_linux_web_app" "app" {
   location            = var.location
   service_plan_id     = azurerm_service_plan.plan.id
   tags                = var.tags
-  site_config {}
+
+  site_config {
+    application_stack {
+      php_version = var.php_version
+    }
+  }
 }

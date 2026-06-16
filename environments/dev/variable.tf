@@ -72,3 +72,8 @@ variable "admin_username" {
   type    = string
   default = "adminuserdev"
 }
+
+variable "php_version" {
+  type    = string
+  default = "8.2"
+}

@@ -73,3 +73,8 @@ variable "file_share_quota" {
   default = 5
 }
 
+variable "php_version" {
+  type    = string
+  default = "8.2"
+}
+

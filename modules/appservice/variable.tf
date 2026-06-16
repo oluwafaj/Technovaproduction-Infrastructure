@@ -20,9 +20,9 @@ variable "sku_name" {
   default = "S1"
 }
 
-variable "runtime_stack" {
-  type        = string
-  description = "e.g. 'NODE|18-lts' or 'PYTHON|3.11'"
+variable "php_version" {
+  type    = string
+  default = "8.2"
 }
 
 variable "tags" {
